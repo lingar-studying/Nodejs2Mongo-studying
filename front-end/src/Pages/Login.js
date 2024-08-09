@@ -5,9 +5,11 @@ import Layout from "../Components/Layout";
 const API_URL = "http://localhost:3500/users";
 
 const Login = () => {
-  const { loggedIn, setLoggedIn, setAccessToken } = useContext(GlobalContext);
+  const { loggedIn, setLoggedIn, setAccessToken, setUserName } =
+    useContext(GlobalContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
@@ -31,6 +33,7 @@ const Login = () => {
       const data = await response.json();
       setAccessToken(data.accessToken);
       setLoggedIn(true);
+      setUserName(data.name);
     } catch (error) {
       setError(error.message);
     }

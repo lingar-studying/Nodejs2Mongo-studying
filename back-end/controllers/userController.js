@@ -69,12 +69,12 @@ exports.login = (req, res) => {
         process.env.JWT_REFRESH_SECRET,
         { expiresIn: process.env.REFRESH_TOKEN_LIFE }
       );
-
+      const name = user.name;
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
       });
-      res.json({ accessToken });
+      res.json({ accessToken, name });
     });
   });
 };

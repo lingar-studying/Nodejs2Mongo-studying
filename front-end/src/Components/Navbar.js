@@ -4,7 +4,8 @@ import { useContext } from "react";
 import GlobalContext from "../Hooks/GlobalContext";
 
 const Navbar = () => {
-  const { loggedIn, setLoggedIn, setAccessToken } = useContext(GlobalContext);
+  const { loggedIn, setLoggedIn, setAccessToken, userName } =
+    useContext(GlobalContext);
 
   const Logout = () => {
     setLoggedIn(false);
@@ -110,15 +111,18 @@ const Navbar = () => {
                     Login
                   </NavLink>
                 ) : (
-                  <NavLink
-                    to="/login"
-                    className={({ isActive }) =>
-                      isActive ? "link selected" : "link"
-                    }
-                    onClick={Logout}
-                  >
-                    Logout
-                  </NavLink>
+                  <>
+                    Wellcome <b>{userName}</b> -
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) =>
+                        isActive ? "link selected" : "link"
+                      }
+                      onClick={Logout}
+                    >
+                      Logout
+                    </NavLink>
+                  </>
                 )}
               </li>
               {!loggedIn && (

@@ -29,6 +29,7 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
+  const [userName, setUserName] = useState("");
   // Local Storage for Cart and Favorite Items & Login
   const [itemsInCart, setItemsInCart] = useState(
     JSON.parse(localStorage.getItem("cartItems"))
@@ -137,6 +138,8 @@ function App() {
           accessToken,
           setAccessToken,
           fetchProducts,
+          userName,
+          setUserName,
         }}
       >
         <BrowserRouter>
