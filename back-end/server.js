@@ -31,7 +31,7 @@ const LoadProducts = async () => {
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(logger);
+// app.use(logger);
 
 app.use("/", productRoutes);
 app.use("/users", userRoutes);

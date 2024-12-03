@@ -13,6 +13,18 @@ exports.getProducts = (req, res) => {
   });
 };
 
+
+exports.playGames = (req, res) => {
+
+  console.log("hello nodejs");
+  // fs.readFile(productsFilePath, (err, data) => {
+  //   if (err)
+  //     return res.status(500).json({ message: "Error reading products file" });
+  //   const products = JSON.parse(data);
+  //   res.json(products);
+  // });
+};
+
 exports.getProductById = (req, res) => {
   const id = req.params.id;
   fs.readFile(productsFilePath, (err, data) => {
