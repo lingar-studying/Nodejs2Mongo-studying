@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const { validateProduct } = require("../utils/validator");
+const {connectToMongo,connectToMongo2} = require("./dataBaseController");
 const productsFilePath = path.join(__dirname, "../data/products.json");
 const archiveFilePath = path.join(__dirname, "../data/archive.json");
+// const {da}
 
 exports.getProducts = (req, res) => {
   fs.readFile(productsFilePath, (err, data) => {
@@ -11,12 +13,18 @@ exports.getProducts = (req, res) => {
     const products = JSON.parse(data);
     res.json(products);
   });
+
+
 };
 
 
 exports.playGames = (req, res) => {
 
   console.log("hello nodejs");
+
+  connectToMongo2();
+  connectToMongo();
+
   // fs.readFile(productsFilePath, (err, data) => {
   //   if (err)
   //     return res.status(500).json({ message: "Error reading products file" });
