@@ -118,19 +118,7 @@ exports.createProductMongoDB = (req, res) => {
   if (!valid) return res.status(400).json({ message: "Invalid product data" });
 
   addItemToDb(newProduct, "products");
-  
 
-  // fs.readFile(productsFilePath, (err, data) => {
-  //   if (err)
-  //     return res.status(500).json({ message: "Error reading products file" });
-  //   const products = JSON.parse(data);
-  //   newProduct.id = products.length + 1;
-  //   products.push(newProduct);
-  //   fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), (err) => {
-  //     if (err) return res.status(500).json({ message: "Error saving product" });
-  //     res.status(201).json(newProduct);
-  //   });
-  // });
 };
 
 
