@@ -1,8 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const { validateProduct } = require("../utils/validator");
+const {connectToMongo,connectToMongo2} = require("./dataBaseController");
+const { log } = require("console");
+const { addItemToDb } = require("./mongoService");
 const productsFilePath = path.join(__dirname, "../data/products.json");
 const archiveFilePath = path.join(__dirname, "../data/archive.json");
+// const {da}
 
 exports.getProducts = (req, res) => {
   fs.readFile(productsFilePath, (err, data) => {
@@ -13,10 +17,13 @@ exports.getProducts = (req, res) => {
   });
 };
 
-
 exports.playGames = (req, res) => {
 
   console.log("hello nodejs");
+
+  connectToMongo2();
+  connectToMongo();
+
   // fs.readFile(productsFilePath, (err, data) => {
   //   if (err)
   //     return res.status(500).json({ message: "Error reading products file" });
@@ -24,6 +31,56 @@ exports.playGames = (req, res) => {
   //   res.json(products);
   // });
 };
+
+exports.playGamesMongoose = async (req, res) => {
+
+  console.log("hello Mongoose");
+
+  const mongooseTool = require("mongoose");
+
+  mongooseTool.connect("mongodb://localhost:27017/newDB")
+  .then(()=> console.log("db connected by mongoose"))
+  .catch(()=> console.log("Error in mongoose connection"));
+
+  // const userSchema = new mongoose.Schema({
+  //   name: String,
+  //   email: String
+  // });
+
+  const productSchema = new mongooseTool.Schema({
+    name: String, 
+    price: Number,
+    inStock: Boolean
+  });
+
+  const product1 = {name: "mouse2", price: 60.50, inStock: true};
+  const product2 = {name: "marker2", price: 5, inStock: false};
+
+  //const User = mongoose.model('User', userSchema);
+  const ProductModel = mongooseTool.model('myProducts', productSchema); 
+  // const ProductModel = mongooseTool.model('product', productSchema); 
+
+  // //const newUser = new User({
+  //   name: 'John Doe',
+  //   email: 'john.doe@example.com'
+  // });
+
+  // await newUser.save();
+  // console.log('User Created:', newUser);
+
+
+  let addProductToDb = new ProductModel([product1, product2]);
+
+  // ProductModel.insertMany([product1, product2]);
+  await addProductToDb.save(); 
+
+  addProductToDb = new ProductModel(product2);
+  await addProductToDb.save(); 
+
+
+};
+
+
 
 exports.getProductById = (req, res) => {
   const id = req.params.id;
@@ -54,6 +111,16 @@ exports.createProduct = (req, res) => {
     });
   });
 };
+
+exports.createProductMongoDB = (req, res) => {
+  const newProduct = req.body;
+  const valid = validateProduct(newProduct);
+  if (!valid) return res.status(400).json({ message: "Invalid product data" });
+
+  addItemToDb(newProduct, "products");
+
+};
+
 
 exports.updateProduct = (req, res) => {
   const id = req.params.id;
