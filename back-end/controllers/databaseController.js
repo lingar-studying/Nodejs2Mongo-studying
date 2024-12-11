@@ -41,6 +41,8 @@ async function connectToMongo2() {
         const result = await collection.insertOne(newOrder);
         console.log('Inserted document:', result);
 
+        
+
 
 
     } catch (err) {

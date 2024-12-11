@@ -3,6 +3,7 @@ const path = require("path");
 const { validateProduct } = require("../utils/validator");
 const {connectToMongo,connectToMongo2} = require("./dataBaseController");
 const { log } = require("console");
+const { addItemToDb } = require("./mongoService");
 const productsFilePath = path.join(__dirname, "../data/products.json");
 const archiveFilePath = path.join(__dirname, "../data/archive.json");
 // const {da}
@@ -14,10 +15,7 @@ exports.getProducts = (req, res) => {
     const products = JSON.parse(data);
     res.json(products);
   });
-
-
 };
-
 
 exports.playGames = (req, res) => {
 
@@ -113,6 +111,28 @@ exports.createProduct = (req, res) => {
     });
   });
 };
+
+exports.createProductMongoDB = (req, res) => {
+  const newProduct = req.body;
+  const valid = validateProduct(newProduct);
+  if (!valid) return res.status(400).json({ message: "Invalid product data" });
+
+  addItemToDb(newProduct, "products");
+  
+
+  // fs.readFile(productsFilePath, (err, data) => {
+  //   if (err)
+  //     return res.status(500).json({ message: "Error reading products file" });
+  //   const products = JSON.parse(data);
+  //   newProduct.id = products.length + 1;
+  //   products.push(newProduct);
+  //   fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), (err) => {
+  //     if (err) return res.status(500).json({ message: "Error saving product" });
+  //     res.status(201).json(newProduct);
+  //   });
+  // });
+};
+
 
 exports.updateProduct = (req, res) => {
   const id = req.params.id;
